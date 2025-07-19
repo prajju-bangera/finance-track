@@ -16,7 +16,7 @@ export default function Dashboard() {
       setLoading(true);
       setError('');
       try {
-        const res = await fetch(`http://localhost:5000/api/transactions?userId=${userId}`);
+        const res = await fetch(`https://finance-track-cslx.onrender.com/api/transactions?userId=${userId}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.msg || 'Failed to fetch transactions');
         setTransactions(data.transactions || []);

@@ -3,7 +3,7 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 
 const financeImage = "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80"; // Example finance image
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://finance-track-cslx.onrender.com/api/auth";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);

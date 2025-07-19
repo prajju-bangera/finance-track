@@ -29,7 +29,7 @@ const paymentMethods = [
   { value: 'other', label: 'Other' }
 ];
 
-const API_URL = 'http://localhost:5000/api/transactions';
+const API_URL = 'https://finance-track-cslx.onrender.com/api/transactions';
 
 const AddTransaction = ({ onClose, refreshTransactions }) => {
   

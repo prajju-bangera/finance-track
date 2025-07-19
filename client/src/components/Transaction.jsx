@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Transaction.css';
 import { FiEdit2, FiTrash2, FiArrowUpRight, FiArrowDownRight, FiCreditCard, FiDollarSign, FiX } from 'react-icons/fi';
 
-const API_URL = 'http://localhost:5000/api/transactions';
+const API_URL = 'https://finance-track-cslx.onrender.com/api/transactions';
 
 const paymentIcons = {
   cash: <FiDollarSign />, 
