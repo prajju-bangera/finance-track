@@ -133,6 +133,29 @@
   animation: fadeIn 1.2s;
 }
 
+.dashboard-graph-section {
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px 0 rgba(99,102,241,0.10);
+  padding: 2rem 1.2rem 1.5rem 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+body.dark .dashboard-graph-section {
+  background: #18181b;
+  box-shadow: 0 4px 24px 0 rgba(99,102,241,0.18);
+}
+.dashboard-graph-title {
+  text-align: center;
+  color: #312e81;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+}
+body.dark .dashboard-graph-title {
+  color: #fbbf24;
+}
+
 @media (max-width: 900px) {
   .dashboard-cards, .dashboard-extras {
     flex-direction: column;

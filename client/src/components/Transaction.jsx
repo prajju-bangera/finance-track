@@ -36,6 +36,14 @@ export default function Transaction() {
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8; // You can adjust this for more/less per page
+
+  // Pagination state for mobile card view
+  const [cardPage, setCardPage] = useState(1);
+  const cardPageSize = 6;
+
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
@@ -68,6 +76,24 @@ export default function Transaction() {
     const matchesDateTo = !dateTo || txnDate <= new Date(dateTo);
     return matchesSearch && matchesType && matchesPayment && matchesDateFrom && matchesDateTo;
   });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredTransactions.length / pageSize);
+  const paginatedTransactions = filteredTransactions.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  // Pagination logic for mobile card view
+  const cardTotalPages = Math.ceil(filteredTransactions.length / cardPageSize);
+  const paginatedCardTransactions = filteredTransactions.slice((cardPage - 1) * cardPageSize, cardPage * cardPageSize);
+
+  // Reset to page 1 when filters/search change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, typeFilter, paymentFilter, dateFrom, dateTo]);
+
+  // Reset to page 1 when filters/search change (for cards)
+  useEffect(() => {
+    setCardPage(1);
+  }, [search, typeFilter, paymentFilter, dateFrom, dateTo]);
 
   const handleEdit = (transaction) => {
     setEditingTransaction(transaction);
@@ -170,53 +196,118 @@ export default function Transaction() {
       {loading ? (
         <div className="transaction-loading">Loading...</div>
       ) : (
-        <div className="transaction-table-wrapper">
-          <table className="transaction-table">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Amount (₹)</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Payment</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTransactions.length === 0 ? (
-                <tr><td colSpan={7} className="no-data">No transactions found.</td></tr>
-              ) : (
-                filteredTransactions.map(txn => (
-                  <tr key={txn._id} className={`txn-row ${txn.type}`}>
-                    <td>
-                      {txn.type === 'income' ? <FiArrowDownRight className="income-icon" /> : <FiArrowUpRight className="expense-icon" />}
-                      <span className="txn-type">{txn.type.charAt(0).toUpperCase() + txn.type.slice(1)}</span>
-                    </td>
-                    <td>{txn.description}</td>
-                    <td className={txn.type === 'income' ? 'income-amt' : 'expense-amt'}>
-                      {Number(txn.amount).toLocaleString('en-IN')}
-                    </td>
-                    <td>{txn.category}</td>
-                    <td>{new Date(txn.date).toLocaleDateString('en-IN')}</td>
-                    <td>
-                      <span className="payment-icon">{paymentIcons[txn.paymentMethod] || <FiCreditCard />}</span>
-                      <span className="payment-method-label">{txn.paymentMethod}</span>
-                    </td>
-                    <td>
-                      <button className="edit-btn" onClick={() => handleEdit(txn)}>
-                        <FiEdit2 />
-                      </button>
-                      <button className="delete-btn" onClick={() => handleDelete(txn._id)}>
-                        <FiTrash2 />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <>
+          {/* Desktop Table View */}
+          <div className="transaction-table-wrapper desktop-table">
+            <table className="transaction-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Amount (₹)</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                  <th>Payment</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTransactions.length === 0 ? (
+                  <tr><td colSpan={7} className="no-data">No transactions found.</td></tr>
+                ) : (
+                  filteredTransactions.map(txn => (
+                    <tr key={txn._id} className={`txn-row ${txn.type}`}>
+                      <td>
+                        {txn.type === 'income' ? <FiArrowDownRight className="income-icon" /> : <FiArrowUpRight className="expense-icon" />}
+                        <span className="txn-type">{txn.type.charAt(0).toUpperCase() + txn.type.slice(1)}</span>
+                      </td>
+                      <td>{txn.description}</td>
+                      <td className={txn.type === 'income' ? 'income-amt' : 'expense-amt'}>
+                        {Number(txn.amount).toLocaleString('en-IN')}
+                      </td>
+                      <td>{txn.category}</td>
+                      <td>{new Date(txn.date).toLocaleDateString('en-IN')}</td>
+                      <td>
+                        <span className="payment-icon">{paymentIcons[txn.paymentMethod] || <FiCreditCard />}</span>
+                        <span className="payment-method-label">{txn.paymentMethod}</span>
+                      </td>
+                      <td>
+                        <button className="edit-btn" onClick={() => handleEdit(txn)}>
+                          <FiEdit2 />
+                        </button>
+                        <button className="delete-btn" onClick={() => handleDelete(txn._id)}>
+                          <FiTrash2 />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          {/* Mobile Card View */}
+          <div className="transaction-cards mobile-cards">
+            {paginatedCardTransactions.length === 0 ? (
+              <div className="no-data">No transactions found.</div>
+            ) : (
+              paginatedCardTransactions.map(txn => (
+                <div key={txn._id} className={`txn-card ${txn.type}`}>
+                  <div className="txn-card-row txn-card-type">
+                    {txn.type === 'income' ? <FiArrowDownRight className="income-icon" /> : <FiArrowUpRight className="expense-icon" />}
+                    <span className="txn-type">{txn.type.charAt(0).toUpperCase() + txn.type.slice(1)}</span>
+                    <span className={`txn-amt ${txn.type === 'income' ? 'income-amt' : 'expense-amt'}`}>{Number(txn.amount).toLocaleString('en-IN')} ₹</span>
+                  </div>
+                  <div className="txn-card-row txn-card-desc">{txn.description}</div>
+                  <div className="txn-card-row txn-card-meta">
+                    <span className="txn-card-label">Category:</span> {txn.category}
+                  </div>
+                  <div className="txn-card-row txn-card-meta">
+                    <span className="txn-card-label">Date:</span> {new Date(txn.date).toLocaleDateString('en-IN')}
+                  </div>
+                  <div className="txn-card-row txn-card-meta">
+                    <span className="txn-card-label">Payment:</span> <span className="payment-icon">{paymentIcons[txn.paymentMethod] || <FiCreditCard />}</span> <span className="payment-method-label">{txn.paymentMethod}</span>
+                  </div>
+                  <div className="txn-card-row txn-card-actions">
+                    <button className="edit-btn" onClick={() => handleEdit(txn)}>
+                      <FiEdit2 />
+                    </button>
+                    <button className="delete-btn" onClick={() => handleDelete(txn._id)}>
+                      <FiTrash2 />
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {/* Pagination Controls for Mobile */}
+          {cardTotalPages > 1 && (
+            <div className="pagination-controls mobile-pagination">
+              <button
+                className="pagination-btn"
+                onClick={() => setCardPage(p => Math.max(1, p - 1))}
+                disabled={cardPage === 1}
+              >
+                Prev
+              </button>
+              {Array.from({ length: cardTotalPages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  className={`pagination-btn${cardPage === i + 1 ? ' active' : ''}`}
+                  onClick={() => setCardPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                className="pagination-btn"
+                onClick={() => setCardPage(p => Math.min(cardTotalPages, p + 1))}
+                disabled={cardPage === cardTotalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       {/* Edit Transaction Modal */}
