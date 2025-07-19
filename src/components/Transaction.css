@@ -1,0 +1,387 @@
+.transaction-page {
+  min-height: 100vh;
+  padding: 2.5rem 1rem 2rem 1rem;
+  background: linear-gradient(120deg, #f8fafc 0%, #e0e7ff 100%);
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+.transaction-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #312e81;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+.transaction-table-wrapper {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 8px 32px 0 rgba(49,46,129,0.10);
+  padding: 1.5rem 1rem;
+}
+.transaction-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 1rem;
+  background: transparent;
+}
+.transaction-table th, .transaction-table td {
+  padding: 0.9rem 1.1rem;
+  text-align: left;
+}
+.transaction-table th {
+  background: linear-gradient(90deg, #e0e7ff 0%, #f8fafc 100%);
+  color: #6366f1;
+  font-weight: 700;
+  border-bottom: 2px solid #c7d2fe;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.transaction-table tbody tr {
+  transition: background 0.18s, box-shadow 0.18s;
+  border-radius: 0.7rem;
+}
+.transaction-table tbody tr:hover {
+  background: #e0e7ff;
+  box-shadow: 0 2px 12px 0 rgba(99,102,241,0.10);
+}
+.txn-row.income .income-icon {
+  color: #059669;
+  font-size: 1.2rem;
+  margin-right: 0.3rem;
+}
+.txn-row.expense .expense-icon {
+  color: #dc2626;
+  font-size: 1.2rem;
+  margin-right: 0.3rem;
+}
+.income-amt {
+  color: #059669;
+  font-weight: 700;
+}
+.expense-amt {
+  color: #dc2626;
+  font-weight: 700;
+}
+.payment-icon {
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
+  color: #6366f1;
+}
+.payment-method-label {
+  color: #312e81;
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+.edit-btn, .delete-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  transition: background 0.18s, color 0.18s, transform 0.18s;
+}
+.edit-btn {
+  color: #6366f1;
+}
+.edit-btn:hover {
+  background: #e0e7ff;
+  color: #312e81;
+  transform: scale(1.15);
+}
+.delete-btn {
+  color: #dc2626;
+}
+.delete-btn:hover {
+  background: #fee2e2;
+  color: #991b1b;
+  transform: scale(1.15);
+}
+.no-data {
+  text-align: center;
+  color: #6366f1;
+  font-weight: 600;
+  padding: 2rem 0;
+}
+.transaction-error {
+  background: linear-gradient(90deg, #fee2e2 0%, #fca5a5 100%);
+  color: #991b1b;
+  border: 1.5px solid #f87171;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
+  animation: fadeIn 0.5s;
+}
+.transaction-loading {
+  text-align: center;
+  color: #6366f1;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 2rem 0;
+}
+@media (max-width: 900px) {
+  .transaction-title {
+    font-size: 1.3rem;
+  }
+  .transaction-table th, .transaction-table td {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.98rem;
+  }
+}
+@media (max-width: 600px) {
+  .transaction-page {
+    padding: 1rem 0.1rem;
+  }
+  .transaction-table-wrapper {
+    padding: 0.5rem 0.1rem;
+  }
+  .transaction-title {
+    font-size: 1.1rem;
+  }
+}
+/* Dark mode support */
+body.dark .transaction-page {
+  background: linear-gradient(120deg, #18181b 0%, #312e81 100%);
+  color: #fff;
+}
+body.dark .transaction-table-wrapper {
+  background: #18181b;
+  box-shadow: 0 8px 32px 0 rgba(49,46,129,0.18);
+}
+body.dark .transaction-table th {
+  background: linear-gradient(90deg, #312e81 0%, #18181b 100%);
+  color: #fbbf24;
+  border-bottom: 2px solid #6366f1;
+}
+body.dark .transaction-table td {
+  color: #fff;
+}
+body.dark .payment-method-label {
+  color: #fbbf24;
+}
+body.dark .edit-btn {
+  color: #fbbf24;
+}
+body.dark .edit-btn:hover {
+  background: #312e81;
+  color: #fff;
+}
+body.dark .delete-btn {
+  color: #f87171;
+}
+body.dark .delete-btn:hover {
+  background: #312e81;
+  color: #f87171;
+} 
+
+.edit-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(49,46,129,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeInBg 0.4s;
+}
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.edit-modal {
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 12px 48px 0 rgba(49,46,129,0.18);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  min-width: 320px;
+  max-width: 400px;
+  width: 100%;
+  animation: modalIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(60px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.edit-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+.edit-modal-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #312e81;
+  letter-spacing: 1px;
+}
+.edit-modal .close-btn {
+  background: none;
+  border: none;
+  color: #6366f1;
+  border-radius: 50%;
+  padding: 0.3rem;
+  transition: background 0.18s, color 0.18s, transform 0.18s;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+.edit-modal .close-btn:hover {
+  background: #e0e7ff;
+  color: #dc2626;
+  transform: rotate(90deg) scale(1.1);
+}
+.edit-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1.1rem;
+}
+.edit-form label {
+  font-size: 1.01rem;
+  color: #6366f1;
+  font-weight: 600;
+}
+.edit-form input,
+.edit-form select {
+  padding: 0.7rem 1rem;
+  border: 1px solid #c7d2fe;
+  border-radius: 0.7rem;
+  font-size: 1rem;
+  outline: none;
+  background: #f1f5f9;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.edit-form input:focus,
+.edit-form select:focus {
+  border: 1.5px solid #6366f1;
+  box-shadow: 0 0 0 2px #6366f133;
+}
+.edit-form .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.edit-form .cancel-btn {
+  background: #f1f5f9;
+  color: #312e81;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+}
+.edit-form .cancel-btn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1.5px solid #f87171;
+}
+.edit-form .save-btn {
+  background: linear-gradient(90deg, #6366f1 0%, #312e81 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s;
+  box-shadow: 0 4px 16px 0 rgba(99,102,241,0.10);
+}
+.edit-form .save-btn:hover {
+  background: linear-gradient(90deg, #312e81 0%, #6366f1 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+@media (max-width: 600px) {
+  .edit-modal {
+    min-width: 95vw;
+    max-width: 99vw;
+    padding: 1.2rem 0.5rem;
+  }
+  .edit-modal-header h3 {
+    font-size: 1rem;
+  }
+}
+/* Dark mode support */
+body.dark .edit-modal {
+  background: #18181b;
+  color: #fff;
+}
+body.dark .edit-modal input,
+body.dark .edit-modal select {
+  background: #312e81;
+  color: #fff;
+  border: 1.5px solid #6366f1;
+}
+body.dark .edit-modal input:focus,
+body.dark .edit-modal select:focus {
+  background: #18181b;
+}
+body.dark .edit-modal-header h3 {
+  color: #fbbf24;
+}
+body.dark .edit-form .cancel-btn {
+  background: #312e81;
+  color: #fff;
+  border: 1.5px solid #6366f1;
+}
+body.dark .edit-form .cancel-btn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1.5px solid #f87171;
+}
+body.dark .edit-form .save-btn {
+  background: linear-gradient(90deg, #22d3ee 0%, #6366f1 100%);
+  color: #fff;
+}
+body.dark .edit-form .save-btn:hover {
+  background: linear-gradient(90deg, #6366f1 0%, #22d3ee 100%);
+} 
+
+.transaction-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+.filter-input, .filter-select {
+  padding: 0.7rem 1rem;
+  border-radius: 0.7rem;
+  border: 1.5px solid #c7d2fe;
+  background: #f1f5f9;
+  font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.filter-input:focus, .filter-select:focus {
+  border: 1.5px solid #6366f1;
+  box-shadow: 0 0 0 2px #6366f133;
+}
+@media (max-width: 900px) {
+  .transaction-filters {
+    gap: 0.5rem;
+  }
+  .filter-input, .filter-select {
+    font-size: 0.98rem;
+    padding: 0.5rem 0.7rem;
+  }
+}
+@media (max-width: 600px) {
+  .transaction-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+  }
+} 

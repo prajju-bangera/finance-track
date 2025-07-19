@@ -11,3 +11,72 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body.dark {
+  background: #111 !important;
+  color: #fff !important;
+  transition: background 0.3s, color 0.3s;
+}
+body.dark * {
+  color: #fff !important;
+  border-color: #333 !important;
+}
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background: #18181b !important;
+  color: #fff !important;
+  border: 1.5px solid #333 !important;
+}
+body.dark .dashboard-header-nav,
+body.dark .dashboard-page,
+body.dark .dashboard-cards .card,
+body.dark .dashboard-graph-section,
+body.dark .transaction-page,
+body.dark .transaction-table-wrapper,
+body.dark .extra-card,
+body.dark .edit-modal,
+body.dark .add-transaction-container.modal {
+  background: #18181b !important;
+  color: #fff !important;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.5) !important;
+}
+body.dark .card-info span,
+body.dark .dashboard-header h1,
+body.dark .dashboard-header p,
+body.dark .dashboard-graph-title,
+body.dark .transaction-title,
+body.dark .profile-welcome {
+  color: #fff !important;
+}
+body.dark .btn-primary,
+body.dark .submit-btn,
+body.dark .save-btn {
+  background: linear-gradient(90deg, #222 0%, #444 100%) !important;
+  color: #fff !important;
+  border: none !important;
+}
+body.dark .btn-primary:hover,
+body.dark .submit-btn:hover,
+body.dark .save-btn:hover {
+  background: linear-gradient(90deg, #444 0%, #222 100%) !important;
+}
+body.dark .edit-btn,
+body.dark .delete-btn {
+  color: #fff !important;
+}
+body.dark .edit-btn:hover,
+body.dark .delete-btn:hover {
+  background: #222 !important;
+  color: #fbbf24 !important;
+}
+body.dark .filter-input,
+body.dark .filter-select {
+  background: #222 !important;
+  color: #fff !important;
+  border: 1.5px solid #333 !important;
+}
+body.dark .form-group label,
+body.dark .form-section-title {
+  color: #fbbf24 !important;
+}
